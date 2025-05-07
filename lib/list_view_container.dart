@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:green/history_screen.dart';
+import 'package:intl/intl.dart';
 import 'models/sensor_reading.dart';
 import 'package:green/services/api_service.dart';
 
@@ -215,13 +216,13 @@ class _ListViewContainerState extends State<ListViewContainer> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Text(
-                          //   _formatTime(reading.recordedAt),
-                          //   style: TextStyle(
-                          //     fontWeight: FontWeight.bold,
-                          //     color: Colors.blue[700],
-                          //   ),
-                          // ),
+                          Text(
+                            _formatTime(reading.createdAt),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue[700],
+                            ),
+                          ),
                           SizedBox(height: 8),
                           _buildDetailRow('Suhu', '${reading.temperature}°C'),
                           _buildDetailRow('PPM', '${reading.ppm}'),
@@ -311,6 +312,10 @@ class _ListViewContainerState extends State<ListViewContainer> {
   String _formatDate(String dateString) {
     final date = DateTime.parse(dateString);
     return '${date.day}/${date.month}/${date.year}';
+  }
+
+  String _formatTime(DateTime time) {
+    return DateFormat('HH:mm').format(time);
   }
 
 }

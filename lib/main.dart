@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'card_view_above.dart';
 import 'card_row.dart';
 import 'card_with_textfield_and_buttons.dart';
@@ -32,8 +33,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final TextEditingController _controller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +42,7 @@ class _HomePageState extends State<HomePage> {
             CardViewAbove(),
             CardRow(),
             AdditionalCard(),
-            CardWithTextFieldAndButtons(controller: _controller),
+            CardWithTextFieldAndButtons(),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(

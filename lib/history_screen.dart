@@ -13,6 +13,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   late Future<DailySensorData> _futureData;
   DateTime _selectedDate = DateTime.now();
   bool _isLoading = false;
+  int _jumlahData = 0;
 
   @override
   void initState() {
@@ -28,6 +29,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
     try {
       _futureData = _apiService.getTodayData();
       await _futureData;
+
+      _futureData.then((data) {
+        if (mounted) setState(() => _jumlahData = data.data.length);
+      });
+
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -43,6 +49,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
     try {
       _futureData = _apiService.getDataByDate(date);
       await _futureData;
+
+      _futureData.then((data) {
+        if (mounted) setState(() => _jumlahData = data.data.length);
+      });
+
     } catch (e) {
       print('Error loading data: $e');
       if (mounted) {
@@ -114,6 +125,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
+            ),
+          ),
+          Text(
+            '$_jumlahData',
+              style: TextStyle(
+                fontSize: 19,
+                color: Colors.blue[900],
+                fontWeight: FontWeight.bold,
             ),
           ),
           TextButton(
@@ -262,6 +281,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   String _formatTime(DateTime time) {
-    return DateFormat('HH:mm').format(time);
+    return DateFormat('HH:mm:ss').format(time);
   }
 }

@@ -27,6 +27,8 @@ class SensorReading {
       throw FormatException('Failed to parse SensorReading: $e');
     }
   }
+
+  get length => null;
 }
 
 class SensorHistory {
