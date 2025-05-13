@@ -12,25 +12,34 @@ class CardWithTextFieldAndButtons extends StatefulWidget {
 class _CardWithTextFieldAndButtonsState
     extends State<CardWithTextFieldAndButtons> {
   final TextEditingController _controller = TextEditingController();
-  final String esp32Ip = "10.10.6.164"; // Ganti IP sesuai ESP32 kamu
+  final String esp32Ip = "192.168.1.8"; // Ganti IP sesuai ESP32 kamu
 
   void updateTargetTDS() async {
     final target = _controller.text.trim();
     if (target.isEmpty) return;
 
-    final url = Uri.parse("http://$esp32Ip/set-tds?target=$target");
+    final url = Uri.parse("http://$esp32Ip/set-tds?value=$target");
 
     try {
       final response = await http.get(url);
-      if (response.statusCode == 200) {
-        _showSnackBar("Berhasil!", "TDS Target diperbarui ke $target", Colors.green);
+      final message = response.body.trim();
+      
+      print("Status code: ${response.statusCode}");
+      print("Response body: ${response.body}");
+
+      if (response.statusCode == 200){
+        // Jika status sukses dan pesan dari ESP sesuai
+        _showSnackBar("Berhasil!", message, Colors.green);
       } else {
-        throw Exception("Gagal update TDS: ${response.body}");
+        // Tetap sukses statusCode tapi respon tidak sesuai harapan
+        _showSnackBar("Gagal!", "Respon tidak valid: $message", Colors.red);
       }
     } catch (e) {
       _showSnackBar("Error", "Terjadi masalah: ${e.toString()}", Colors.red);
     }
   }
+
+
 
   void _showSnackBar(String title, String message, Color color) {
   showDialog(
@@ -117,13 +126,16 @@ class _CardWithTextFieldAndButtonsState
     return Card(
       margin: const EdgeInsets.all(16),
       elevation: 4,
+      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             const Text(
               'Masukkan Target TDS',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,),
             ),
             const SizedBox(height: 12),
             TextField(
@@ -136,9 +148,20 @@ class _CardWithTextFieldAndButtonsState
             ),
             const SizedBox(height: 12),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green, // warna latar tombol
+                foregroundColor: Colors.white, // warna teks tombol
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8), // sudut tombol
+                ),
+              ),
               onPressed: _showCustomDialog,
-              child: const Text("Kirim ke ESP32"),
-            ),
+              child: const Text(
+                "Kirim ke ESP32",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),  
           ],
         ),
       ),
