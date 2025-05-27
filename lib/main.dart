@@ -44,29 +44,32 @@ class _HomePageState extends State<HomePage> {
             AdditionalCard(),
             CardWithTextFieldAndButtons(),
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'History',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HistoryScreen()),
-                      );
-                    },
-                    child: Text('Lihat Semua'),
-                  ),
-                ],
-              ),
-            ),
+  padding: const EdgeInsets.all(8.0),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Expanded(
+        child: Text(
+          'History',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HistoryScreen()),
+          );
+        },
+        child: Text('Lihat Semua'),
+      ),
+    ],
+  ),
+),
+
             // SizedBox(
             //   height: 300,
             //   child: ListViewContainer(),

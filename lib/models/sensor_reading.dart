@@ -1,10 +1,11 @@
 // sensor_models.dart
 class SensorReading {
-  final int id;
-  final double temperature;
-  final int ppm;
+  final int? id;
+  final double? temperature;
+  final int? ppm;
   final double waterLevel;
   final DateTime createdAt;
+
 
   SensorReading({
     required this.id,
@@ -18,7 +19,7 @@ class SensorReading {
     try{
     return SensorReading(
       id: json['id'],
-      temperature: json['temperature'].toDouble(),
+      temperature: (json['temperature'] as num?)?.toDouble(),
       ppm: json['ppm'],
       waterLevel: json['water_level'].toDouble(),
       createdAt: DateTime.parse(json['created_at']),

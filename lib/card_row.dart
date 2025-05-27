@@ -44,11 +44,9 @@ class _CardRowState extends State<CardRow> {
 
   @override
   Widget build(BuildContext context) {
-    if (_readings.isEmpty) {
-      return Center(child: CircularProgressIndicator());
-    }
-
-    final latestReading = _readings.last;
+    final latestReading = _readings.isNotEmpty
+      ? _readings.last
+      : SensorReading(temperature: null, ppm: null, id: null, waterLevel: 0, createdAt: DateTime.now()); // atau nilai default
 
     return Row(
       children: [
@@ -56,7 +54,9 @@ class _CardRowState extends State<CardRow> {
         Expanded(
           child: buildCard(
             'assets/suhu.json',
-            '${latestReading.temperature}°C',
+            latestReading.temperature != null
+            ? '${latestReading.temperature}°C'
+            : '—',
           ),
         ),
 
@@ -64,7 +64,9 @@ class _CardRowState extends State<CardRow> {
         Expanded(
           child: buildCard(
             'assets/daun.json',
-            '${latestReading.ppm} PPM',
+            latestReading.ppm != null
+                ? '${latestReading.ppm} PPM'
+                : '—',
           ),
         ),
       ],
